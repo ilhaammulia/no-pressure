@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorepinRequest;
 use App\Http\Requests\UpdatepinRequest;
 use App\Models\Pin;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class PinController extends Controller
 {
@@ -15,17 +17,19 @@ class PinController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $user = auth()->user();
+        $pins = Pin::where('user_id', $user->id)->latest()->get()->map(function ($pin) {
+            return [
+                'id' => $pin->id,
+                'title' => $pin->title,
+                'description' => $pin->description,
+                'user_name' => $pin->User->name,
+                'created_at' => $pin->created_at->format('M, d Y')
+            ];
+        });
+        return Inertia::render('Pins', [
+            'pins' => $pins
+        ]);
     }
 
     /**
@@ -36,51 +40,40 @@ class PinController extends Controller
      */
     public function store(StorepinRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pin  $Pin
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pin $Pin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pin  $Pin
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pin $Pin)
-    {
-        //
+        $validated = $request->validated();
+        $user = auth()->user();
+        $pin = Pin::create([...$validated, 'user_id' => $user->id,]);
+        if ($pin) {
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatepinRequest  $request
-     * @param  \App\Models\Pin  $Pin
+     * @param  \App\Models\Pin  $pin
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatepinRequest $request, Pin $Pin)
+    public function update(UpdatepinRequest $request, Pin $pin)
     {
-        //
+        $user = auth()->user();
+        if ($user->id == $pin->user_id) {
+            $validated = $request->validated();
+            $pin->update($validated);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Pin  $Pin
+     * @param  \App\Models\Pin  $pin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pin $Pin)
+    public function destroy(Pin $pin)
     {
-        //
+        $user = auth()->user();
+        if ($user->id == $pin->user_id) {
+            $pin->delete();
+        }
     }
 }
