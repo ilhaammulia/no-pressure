@@ -1,24 +1,39 @@
 <template>
-  <div class="max-w-sm rounded overflow-hidden shadow-lg h-60">
-    <div class="w-full h-24 bg-gradient-to-r from-purple-600 to-lime-600"></div>
-    <div class="px-6 py-4">
-      <div class="font-bold text-lg mb-1">{{ pin.title }}</div>
-      <p class="text-gray-700 text-base">{{ pin.description }}</p>
+  <div class="col-span-1 flex flex-col bg-white border-2 p-4 rounded-lg h-56 shadow-lg transform transition duration-500 cursor-pointer hover:scale-105">
+    <div class="px-3 py-2 w-full">
+      <div class="flex justify-between items-center mb-2">
+        <p class="text-xs text-gray-400 font-bold">{{ pin.created_at }}</p>
+        <PinDropdown :pin="pin" @update-pin="updatePin" />
+      </div>
+      <div class="font-bold text-lg mb-1 text-indigo-500">{{ pin.title }}</div>
+      <div class="line-clamp-4">
+        <p class="text-gray-500 text-sm text-md clamp-description">{{ pin.description }}</p>
+      </div>
     </div>
-    <!-- <div class="px-6 pt-4 pb-2">
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-    </div> -->
   </div>
 </template>
 
 <script>
+import PinDropdown from '@/Components/PinDropdown.vue';
+
+
 export default {
-  name: 'PinCard',
-  props: ['pin'],
+  name: "PinCard",
+  props: ["pin"],
+  components: { PinDropdown },
+  methods: {
+    updatePin(value) {
+      this.$emit('update-pin', value);
+    }
+  }
 };
 </script>
+
+<style>
+.clamp-description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+</style>
