@@ -23,13 +23,13 @@
       },
     },
     components: { Dropdown, DropdownLink, DeleteIcons, ElipsisIcons },
-    props: ['pin']
+    props: ['pin', 'align']
   }
 </script>
 
 
 <template>
-  <Dropdown align="right">
+  <Dropdown :align="align">
     <template #trigger>
       <button class="text-xs">
         <ElipsisIcons class="w-4 h-4 fill-gray-400" />

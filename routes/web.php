@@ -23,11 +23,13 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'pins' => Pin::latest()->get()->map(function ($pin) {
+        'pins' => Pin::latest()->limit(5)->get()->map(function ($pin) {
             return [
+                'id' => $pin->id,
                 'title' => $pin->title,
                 'description' => $pin->description,
-                'user_name' => $pin->User->name
+                'user_name' => $pin->User->name,
+                'created_at' => $pin->created_at->format('D, d M Y')
             ];
         })
     ]);

@@ -1,38 +1,38 @@
 <template>
     <AppLayout title="Dashboard">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Pins
-            </h2>
+            <div class="flex justify-between items-center">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Pins</h2>
+                <SearchBar @search-value="setSearchValue" class="text-gray-600  fill-current hidden md:block" />
+                <Toolbar @mode-toggle="changeShowMode" @modal-toggle="modalToggle" />
+            </div>
         </template>
 
         <div class="flex">
+            <div class="mx-auto py-12 max-w-7xl sm:px-6 lg:px-8">
 
-            <div class="mx-auto py-12 max-w-7xl" :class="{ 'blur-sm': isVisible === true }">
-                <div class="flex justify-between mx-auto sm:px-6 lg:px-8">
-                    <SearchBar class="text-gray-600 h-4 w-4 fill-current" />
-                    <ShowModeSwitch @mode-toggle="changeShowMode" />
-                </div>
                 <div class="flex">
                     <!-- Pin Card List -->
-                    <div class="mx-auto sm:px-6 lg:px-8 py-5">
-                        <div v-if="showMode === 'grid'" class="grid grid-cols-3 grid-flow-row gap-10">
-                            <CreatePinCard @modal-toggle="modalToggle" />
-                            <div v-for="pin in pins" :key="pin.id">
+                    <div class="mx-auto pt-5">
+
+                        <!-- Pin Card Grid Mode -->
+                        <div v-if="showMode === 'grid'" class="grid grid-cols-1 grid-flow-row gap-10 md:grid-cols-2">
+                            <div v-for="pin in filteredPins" :key="pin.id">
                                 <PinCard :pin="pin" @update-pin="updatePin" />
                             </div>
                         </div>
 
+                        <!-- Pin Card List Mode -->
                         <div v-if="showMode === 'list'" class="grid grid-flow-row gap-7">
-                            <div v-for="pin in pins" :key="pin.id">
+                            <div v-for="pin in filteredPins" :key="pin.id">
                                 <PinCardList :pin="pin" @update-pin="updatePin" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Sidebar Modal for Create Pin -->
-            <PinModal :isVisible="isVisible" @close-modal="modalToggle" :pinToUpdate="pinToUpdate" ref="modal" />
+            <!-- Sidebar Modal for Create/Update Pin -->
+            <PinModal @close-modal="modalToggle" :pinToUpdate="pinToUpdate" ref="modal" />
         </div>
     </AppLayout>
 </template>
@@ -42,39 +42,46 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Welcome from '@/Components/Welcome.vue';
 import PinCard from '@/Components/PinCard.vue';
 import PinCardList from '@/Components/PinCardList.vue';
-import CreatePinCard from '@/Components/CreatePinCard.vue';
 import PinModal from '@/Components/PinModal.vue';
-import ShowModeSwitch from '@/Components/ShowModeSwitch.vue';
+import Toolbar from '@/Components/Toolbar.vue';
 import SearchBar from '@/Components/SearchBar.vue';
 
 export default {
     data() {
-        return { isVisible: false, pinToUpdate: null, showMode: 'grid' }
+        return { pinToUpdate: null, showMode: 'grid', searchValue: '' }
     },
     components: {
         AppLayout,
         Welcome,
         PinCard,
         PinCardList,
-        CreatePinCard,
         PinModal,
-        PinModal,
-        ShowModeSwitch,
-        SearchBar
+        Toolbar,
+        SearchBar,
+    },
+    computed: {
+        filteredPins() {
+            const searchValue = this.searchValue.toLowerCase();
+            return this.pins.filter(pin => pin.title.toLowerCase().includes(searchValue))
+        }
     },
     props: {
         pins: Array
     },
     methods: {
-        modalToggle(isVisible) {
-            this.isVisible = !isVisible
+        modalToggle() {
+            this.$refs.modal.toggleModal()
         },
         updatePin(value) {
             this.pinToUpdate = value
-            this.isVisible = true
+            if (!this.$refs.modal.isVisible)
+                this.modalToggle()
         },
         changeShowMode(value) {
             this.showMode = value
+        },
+        setSearchValue(value) {
+            this.searchValue = value
         }
     }
 }

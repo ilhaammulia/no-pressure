@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorepinRequest;
 use App\Http\Requests\UpdatepinRequest;
 use App\Models\Pin;
-use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 use Inertia\Inertia;
 
 class PinController extends Controller
@@ -24,7 +24,7 @@ class PinController extends Controller
                 'title' => $pin->title,
                 'description' => $pin->description,
                 'user_name' => $pin->User->name,
-                'created_at' => $pin->created_at->format('M, d Y')
+                'created_at' => $pin->created_at->format('D, d M Y')
             ];
         });
         return Inertia::render('Pins', [
@@ -42,9 +42,7 @@ class PinController extends Controller
     {
         $validated = $request->validated();
         $user = auth()->user();
-        $pin = Pin::create([...$validated, 'user_id' => $user->id,]);
-        if ($pin) {
-        }
+        Pin::create([...$validated, 'user_id' => $user->id,]);
     }
 
     /**
