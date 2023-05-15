@@ -27,7 +27,6 @@ export default {
       form.post(route('pin.create'), {
         onSuccess: () => {
           form.reset();
-          this.toggleModal()
         }
       });
     };
@@ -36,7 +35,6 @@ export default {
       form.put(route('pin.update', { id: form.id }), {
         onSuccess: () => {
           form.reset();
-          this.toggleModal()
         }
       })
     };
