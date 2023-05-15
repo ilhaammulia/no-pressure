@@ -55,6 +55,6 @@ Last steps.
 
 ## Support
 
-For any further assistance or inquiries, please reach me out at ilham@admin.com. I am here to help!
+For any further assistance or inquiries, please reach me out at dev.ilhammulia@gmail.com. I am here to help!
 
 Thank you for choosing my app. Enjoy exploring the platform and creating an amazing pinning experience!

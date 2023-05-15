@@ -26,4 +26,4 @@ We use cookies to enhance your browsing experience and improve the functionality
 
 We reserve the right to modify or update this privacy policy at any time. Any changes will be effective upon posting the revised policy on our website. We encourage you to review this policy periodically to stay informed about how we handle your information.
 
-If you have any questions or concerns regarding our privacy practices, please contact us at ilham@admin.com. Your privacy is important to us, and we will make every effort to address your inquiries in a timely and satisfactory manner.
+If you have any questions or concerns regarding our privacy practices, please contact us at dev.ilhammulia@gmail.com. Your privacy is important to us, and we will make every effort to address your inquiries in a timely and satisfactory manner.

@@ -34,4 +34,4 @@ These terms and conditions shall be governed by and construed in accordance with
 
 We reserve the right to modify or update these terms and conditions at any time without prior notice. It is your responsibility to review these terms periodically for any changes. Continued use of our services after modifications constitutes acceptance of the updated terms.
 
-If you have any questions or concerns regarding our terms and conditions, please contact us at ilham@admin.com. Thank you for using our website!
+If you have any questions or concerns regarding our terms and conditions, please contact me at dev.ilhammulia@gmail.com. Thank you for using our website!
